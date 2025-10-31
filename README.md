@@ -1,4 +1,3 @@
-=
 Stock Research — HMM 기반 시장 판단 & 레짐 스위칭 전략
 =
 
