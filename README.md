@@ -8,7 +8,7 @@ Stock_research_25-2  —  Regime-switch Backtesting Framework
 트레일링 스탑(ATR/퍼센트), 초기 하드스톱, 현실적 체결 모드를 반영한
 데일리 백테스트 파이프라인.
 
-핵심 특징
+핵핵심 특징
 ---------
 - Regime 기반 전략 스위칭 (regime 값에 따라 전략 선택)
 - 전략 세트: strat_momentum, strat_mean_reversion, strat_random_walk
@@ -21,6 +21,7 @@ Stock_research_25-2  —  Regime-switch Backtesting Framework
 ────────────────────────────────────────────────────────────
 1) Quick Start
 ────────────────────────────────────────────────────────────
+```python
 from regime_backtester import RegimeBacktester, BTConfig
 
 cfg = BTConfig(
@@ -60,6 +61,7 @@ bt = rb.run_backtest(
 
 rb.plot_backtest_with_trades_rainbow(bt, df_out, ticker="SPY")
 rb.plot_cum_return_after(bt, title="Cumulative Return (net) vs Buy&Hold")
+```
 
 ────────────────────────────────────────────────────────────
 2) Data Requirements
@@ -74,7 +76,10 @@ rb.plot_cum_return_after(bt, title="Cumulative Return (net) vs Buy&Hold")
 ────────────────────────────────────────────────────────────
 3) Core API 개요
 ────────────────────────────────────────────────────────────
+```python
 # BTConfig (핵심 일부)
+from dataclasses import dataclass
+
 @dataclass
 class BTConfig:
     init_capital: float = 1_000_000.0
@@ -107,6 +112,7 @@ rb.run_backtest(
     hard_stop_use_entry_atr=True,
     ...
 )
+```
 
 체결/스탑 로직 요약
 - 트리거 판정
@@ -158,6 +164,7 @@ PnL 반영(스탑 체결 바)
 ────────────────────────────────────────────────────────────
 6) Strategy Attribution(기여도)
 ────────────────────────────────────────────────────────────
+```python
 from regime_backtester import strategy_attribution
 
 # 예: regime1_momentum, regime3_mean_reversion 등 라벨 자동 생성
@@ -173,15 +180,17 @@ summary, parts = rb.strategy_attribution(
 
 print(summary)   # TotalRet, CAGR, Sharpe(ann.), MaxDD, DaysActive, Contribution(%)
 # parts: 일별 전략별 net 기여 시리즈 (같은 전략명은 자동 합산)
-
+```
 ────────────────────────────────────────────────────────────
 7) 시각화
 ────────────────────────────────────────────────────────────
+```python
 rb.plot_backtest_with_trades_rainbow(bt, df_out, ticker="SPY")
 # 가격, 레짐 셰이딩, 엔트리/청산/리버설, 스탑 포인트 표시
 
 rb.plot_cum_return_after(bt, title="Cumulative Return (net) vs Buy&Hold")
 # 순/총(그로스) 누적수익, 바앤홀 비교, 초기/최종 자본 출력
+```
 
 ────────────────────────────────────────────────────────────
 8) 권장 비용 세팅(참고)
@@ -194,19 +203,23 @@ rb.plot_cum_return_after(bt, title="Cumulative Return (net) vs Buy&Hold")
 ────────────────────────────────────────────────────────────
 9) 프로젝트 구조(예시)
 ────────────────────────────────────────────────────────────
+```
 Stock_research_25-2/
-- regime_backtester.py     (핵심 클래스/전략/스탑/시각화/어트리뷰션)
-- notebooks/
-  - demo.ipynb             (사용 예제)
-- data/
-  - sample.csv             (예시 데이터, 선택)
-- README                   (이 파일)
-- requirements.txt
+├─ regime_backtester.py     # 핵심 클래스/전략/스탑/시각화/어트리뷰션
+├─ notebooks/
+│  └─ demo.ipynb            # 사용 예제
+├─ data/
+│  └─ sample.csv            # 예시 데이터(선택)
+├─ README.md
+└─ requirements.txt
+```
 
 requirements.txt 예시
+```
 pandas
 numpy
 matplotlib
+```
 
 ────────────────────────────────────────────────────────────
 10) 재현(Repro) 절차(예시)
@@ -218,7 +231,7 @@ matplotlib
 5. strategy_attribution 실행으로 기여도 분석
 
 ────────────────────────────────────────────────────────────
-11) 더 정리할 부분(추후 작성 예정)
+11) Open Questions(채워 주세요)
 ────────────────────────────────────────────────────────────
 - 레짐 산출 방식: regime 컬럼 생성 방법(모델/룰/레이블링)
 - 데이터 소스/주기: 종목/지수/ETF, 시간대/영업일, 결측치 처리
